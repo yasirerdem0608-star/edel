@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -72,11 +71,8 @@ function LoginForm() {
           {loading ? "Giriliyor..." : "Giriş Yap"}
         </Button>
       </form>
-      <p className="mt-5 text-center text-sm text-fg-muted">
-        Hesabın yok mu?{" "}
-        <Link href="/signup" className="font-semibold text-brand hover:underline">
-          Kayıt ol
-        </Link>
+      <p className="mt-5 text-center text-xs text-fg-soft">
+        Erişim için ekip yöneticinden hesap iste.
       </p>
     </div>
   );

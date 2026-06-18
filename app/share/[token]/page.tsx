@@ -189,7 +189,7 @@ function ShareLayout({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 md:px-8">
           <EdelLogo href="/" />
           <Button variant="secondary" size="sm" asChild>
-            <Link href="/signup">Hesap Aç</Link>
+            <Link href="/login">Giriş Yap</Link>
           </Button>
         </div>
       </header>

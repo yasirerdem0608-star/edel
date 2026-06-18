@@ -21,11 +21,8 @@ export default async function HomePage() {
         <div className="container flex h-16 items-center justify-between">
           <EdelLogo />
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Giriş Yap</Link>
-            </Button>
             <Button size="sm" asChild>
-              <Link href="/signup">Ücretsiz Başla</Link>
+              <Link href="/login">Drive'a Gir</Link>
             </Button>
           </div>
         </div>
@@ -44,10 +41,7 @@ export default async function HomePage() {
         </p>
         <div className="mt-9 flex items-center justify-center gap-3">
           <Button size="lg" asChild>
-            <Link href="/signup">Ücretsiz Başla</Link>
-          </Button>
-          <Button size="lg" variant="secondary" asChild>
-            <Link href="/login">Giriş Yap</Link>
+            <Link href="/login">Drive'a Gir</Link>
           </Button>
         </div>
 
