@@ -196,7 +196,7 @@ export function DriveBrowser({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="opacity-0 group-hover:opacity-100"
+                      className="opacity-100 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
                     >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
@@ -240,7 +240,7 @@ export function DriveBrowser({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="opacity-0 group-hover:opacity-100"
+                      className="opacity-100 transition-opacity [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100"
                     >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
