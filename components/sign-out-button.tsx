@@ -14,8 +14,8 @@ export function SignOutButton() {
     router.refresh();
   }
   return (
-    <Button variant="ghost" size="sm" onClick={signOut}>
-      <LogOut className="h-4 w-4" />
+    <Button variant="outline" size="sm" onClick={signOut}>
+      <LogOut className="h-3.5 w-3.5" />
       Çıkış
     </Button>
   );

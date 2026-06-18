@@ -39,24 +39,25 @@ export function FilePreview({ file, onClose }: { file: FileRow | null; onClose: 
     <Dialog open={!!file} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <DialogTitle className="truncate pr-8">{file.name}</DialogTitle>
-          <p className="text-xs text-muted-foreground">
+          <p className="overline">ÖNİZLEME</p>
+          <DialogTitle className="mt-1 truncate pr-8">{file.name}</DialogTitle>
+          <p className="text-xs text-fg-soft">
             {formatBytes(file.size_bytes)} {mime && `· ${mime}`}
           </p>
         </DialogHeader>
 
-        <div className="grid min-h-[300px] place-items-center rounded-md bg-muted/30">
+        <div className="grid min-h-[320px] place-items-center overflow-hidden rounded-2xl border border-border-light bg-surface-2">
           {!url ? (
-            <p className="text-sm text-muted-foreground">Yükleniyor...</p>
+            <p className="text-sm text-fg-muted">Yükleniyor...</p>
           ) : mime.startsWith("image/") ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={url} alt={file.name} className="max-h-[70vh] rounded" />
+            <img src={url} alt={file.name} className="max-h-[70vh] w-full object-contain" />
           ) : mime.startsWith("video/") ? (
-            <video src={url} controls className="max-h-[70vh] w-full rounded" />
+            <video src={url} controls className="max-h-[70vh] w-full" />
           ) : mime === "application/pdf" ? (
-            <iframe src={url} className="h-[70vh] w-full rounded" />
+            <iframe src={url} className="h-[70vh] w-full" />
           ) : (
-            <div className="p-8 text-center text-sm text-muted-foreground">
+            <div className="p-12 text-center text-sm text-fg-muted">
               Bu dosya türü için önizleme yok. İndir butonunu kullanabilirsin.
             </div>
           )}

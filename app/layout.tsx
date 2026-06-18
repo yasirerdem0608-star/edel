@@ -3,13 +3,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Edel Drive",
-  description: "Takımın için sınırsız, hızlı dosya deposu.",
+  description: "Edel ekibinin dosya deposu. Yükle, paylaş, birlikte çalış.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen bg-bg font-sans antialiased">{children}</body>
     </html>
   );
 }

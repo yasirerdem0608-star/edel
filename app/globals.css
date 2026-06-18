@@ -1,62 +1,183 @@
+/* ============================================================
+   Edel Drive — design tokens (synced with Edel Design System)
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    /* Brand */
+    --edel-orange: #ea580c;
+    --edel-orange-light: #f97316;
+    --edel-orange-dark: #c2410c;
+    --edel-orange-soft: #ffedd5;
+    --edel-red: #ef4444;
+    --edel-red-hover: #dc2626;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    /* Surfaces */
+    --bg: #fffbf5;
+    --surface: #ffffff;
+    --surface-2: #fdf6ec;
+    --surface-3: #fff7ed;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Text */
+    --text: #0f172a;
+    --text-muted: #475569;
+    --text-soft: #94a3b8;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Semantic */
+    --primary: #ea580c;
+    --primary-light: #f97316;
+    --primary-soft: #ffedd5;
+    --primary-contrast: #ffffff;
+    --accent: #ef4444;
+    --accent-hover: #dc2626;
+    --accent-soft: #fee2e2;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Borders */
+    --border: #ebdccf;
+    --border-light: #f3f4f6;
+    --border-primary: #fdba74;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Status */
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Effects */
+    --ring: rgba(234, 88, 12, 0.25);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Gradients */
+    --gradient-cta: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #fb923c 100%);
+    --gradient-hero: linear-gradient(135deg, #fffbf5 0%, #fff7ed 50%, #fffbf5 100%);
+    --gradient-accent-text: linear-gradient(135deg, #ef4444, #f97316);
 
-    --radius: 0.625rem;
+    /* Shadows */
+    --shadow-card: 0 2px 10px rgba(146, 64, 14, 0.06);
+    --shadow-modal: 0 8px 32px rgba(26, 26, 46, 0.16);
+    --shadow-glow-primary: 0 3px 10px rgba(234, 88, 12, 0.2);
+    --shadow-soft-md: 0 2px 8px rgba(26, 26, 46, 0.07);
+    --shadow-soft-lg: 0 4px 16px rgba(26, 26, 46, 0.09);
+
+    --radius: 12px;
   }
 
   .dark {
-    --background: 222.2 47.4% 6%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 47.4% 8%;
-    --card-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface-2: #334155;
+    --surface-3: #431407;
+    --text: #f8fafc;
+    --text-muted: #b0bec5;
+    --text-soft: #94a3b8;
+    --primary: #f97316;
+    --primary-light: #fb923c;
+    --primary-soft: #7c2d12;
+    --accent: #f87171;
+    --accent-hover: #ef4444;
+    --border: #334155;
+    --border-light: #475569;
   }
 
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
+
+  html {
+    font-family:
+      "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      sans-serif;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  /* Signature orange overline (eyebrow) */
+  .overline {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: var(--gradient-accent-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Card – warm-tinted soft shadow */
+  .edel-card {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    box-shadow: var(--shadow-card);
+    transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .edel-card:hover {
+    transform: translateY(-1px);
+    border-color: rgba(234, 88, 12, 0.4);
+    box-shadow: var(--shadow-soft-lg);
+  }
+
+  /* Hero ambient blobs */
+  .hero-glow::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(600px circle at 15% 20%, rgba(249, 115, 22, 0.18), transparent 45%),
+      radial-gradient(500px circle at 85% 70%, rgba(239, 68, 68, 0.12), transparent 45%);
+    filter: blur(60px);
+    z-index: 0;
+  }
+}
+
+@layer utilities {
+  .bg-bg { background-color: var(--bg); }
+  .bg-surface { background-color: var(--surface); }
+  .bg-surface-2 { background-color: var(--surface-2); }
+  .bg-surface-3 { background-color: var(--surface-3); }
+  .bg-primary { background-color: var(--primary); }
+  .bg-primary-soft { background-color: var(--primary-soft); }
+  .bg-accent { background-color: var(--accent); }
+  .bg-accent-soft { background-color: var(--accent-soft); }
+  .bg-gradient-cta { background: var(--gradient-cta); }
+
+  .text-fg { color: var(--text); }
+  .text-muted { color: var(--text-muted); }
+  .text-soft { color: var(--text-soft); }
+  .text-primary { color: var(--primary); }
+  .text-accent { color: var(--accent); }
+  .text-success { color: var(--success); }
+
+  .border-default { border-color: var(--border); }
+  .border-light { border-color: var(--border-light); }
+  .border-primary { border-color: var(--border-primary); }
+
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .shadow-glow-primary { box-shadow: var(--shadow-glow-primary); }
+  .shadow-soft-lg { box-shadow: var(--shadow-soft-lg); }
+
+  .ring-primary {
+    --tw-ring-color: var(--ring);
   }
 }

@@ -41,14 +41,15 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
-      <h1 className="text-xl font-semibold">Hesap oluştur</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Takımın için ilk workspace'i de oluşturalım.
-      </p>
+    <div className="edel-card p-7">
+      <div className="text-center">
+        <p className="overline">HEMEN BAŞLA</p>
+        <h1 className="mt-2 text-2xl font-extrabold tracking-tight">Hesap oluştur</h1>
+        <p className="mt-1 text-sm text-fg-muted">Takımının ilk workspace'ini birlikte kuralım.</p>
+      </div>
       <form onSubmit={onSubmit} className="mt-6 space-y-3">
         <Input
-          placeholder="Takım/şirket adı"
+          placeholder="Takım / şirket adı"
           value={workspace}
           onChange={(e) => setWorkspace(e.target.value)}
           required
@@ -68,15 +69,23 @@ export default function SignupPage() {
           minLength={6}
           required
         />
-        {err && <p className="text-sm text-destructive">{err}</p>}
-        {info && <p className="text-sm text-emerald-600">{info}</p>}
+        {err && (
+          <p className="rounded-md bg-accent-soft px-3 py-2 text-xs font-medium text-accent">
+            {err}
+          </p>
+        )}
+        {info && (
+          <p className="rounded-md bg-[#dcfce7] px-3 py-2 text-xs font-medium text-success">
+            {info}
+          </p>
+        )}
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Oluşturuluyor..." : "Hesabı oluştur"}
+          {loading ? "Oluşturuluyor..." : "Ücretsiz Başla"}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm text-muted-foreground">
+      <p className="mt-5 text-center text-sm text-fg-muted">
         Zaten hesabın var mı?{" "}
-        <Link href="/login" className="text-primary underline-offset-4 hover:underline">
+        <Link href="/login" className="font-semibold text-brand hover:underline">
           Giriş yap
         </Link>
       </p>

@@ -46,7 +46,6 @@ export function UploadDropzone({
         files.map(async (file, idx) => {
           const it = newItems[idx];
           try {
-            // 1) DB satırı (id'yi storage path için kullan)
             const { data: fileRow, error: insErr } = await supabase
               .from("files")
               .insert({
@@ -66,7 +65,6 @@ export function UploadDropzone({
               prev.map((x) => (x.id === it.id ? { ...x, status: "uploading" } : x)),
             );
 
-            // 2) Storage'a yükle
             const { error: upErr } = await supabase.storage
               .from("drive")
               .upload(fileRow.storage_path, file, {
@@ -103,7 +101,6 @@ export function UploadDropzone({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: handleFiles,
-    noClick: false,
   });
 
   const active = items.filter((i) => i.status === "uploading" || i.status === "pending");
@@ -113,44 +110,53 @@ export function UploadDropzone({
       <div
         {...getRootProps()}
         className={cn(
-          "flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-muted/30 px-6 py-10 text-center transition-colors",
-          isDragActive ? "border-primary bg-primary/5" : "border-muted-foreground/20 hover:border-muted-foreground/40",
+          "group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed px-6 py-10 text-center transition-all ease-edel",
+          isDragActive
+            ? "border-brand bg-primary-soft/40 scale-[1.005]"
+            : "border-border bg-surface-3/40 hover:border-[#fdba74] hover:bg-surface-3/70",
         )}
       >
         <input {...getInputProps()} />
-        <CloudUpload className="h-10 w-10 text-muted-foreground" />
-        <p className="mt-3 text-sm font-medium">
-          {isDragActive ? "Bırakabilirsin..." : "Dosyaları buraya sürükle veya tıkla"}
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-brand">
+          <CloudUpload className="h-7 w-7" strokeWidth={2.25} />
+        </div>
+        <p className="mt-4 text-base font-bold text-fg">
+          {isDragActive ? "Bırakabilirsin..." : "Dosyaları buraya sürükle"}
         </p>
-        <p className="mt-1 text-xs text-muted-foreground">
-          Birden fazla dosya seçebilirsin. Tarayıcıdan direkt Supabase Storage'a yüklenir.
+        <p className="mt-1 text-sm text-fg-muted">
+          ya da tıklayarak seç — tarayıcıdan direkt depoya, hafıza derdi yok.
         </p>
       </div>
 
       {items.length > 0 && (
-        <div className="rounded-lg border bg-card">
-          <div className="flex items-center justify-between border-b px-4 py-2 text-xs text-muted-foreground">
-            <span>{active.length > 0 ? `${active.length} dosya yükleniyor` : "Yüklemeler"}</span>
+        <div className="overflow-hidden rounded-xl border border-border-light bg-surface shadow-card">
+          <div className="flex items-center justify-between border-b border-border-light px-4 py-2.5 text-xs">
+            <span className="font-bold text-fg">
+              {active.length > 0 ? `${active.length} dosya yükleniyor...` : "Yüklemeler"}
+            </span>
             {active.length === 0 && (
-              <button onClick={() => setItems([])} className="hover:text-foreground">
+              <button
+                onClick={() => setItems([])}
+                className="font-semibold text-fg-muted hover:text-fg"
+              >
                 Temizle
               </button>
             )}
           </div>
-          <ul className="divide-y">
+          <ul className="divide-y divide-border-light">
             {items.slice(0, 10).map((it) => (
-              <li key={it.id} className="flex items-center gap-3 px-4 py-2 text-sm">
+              <li key={it.id} className="flex items-center gap-3 px-4 py-2.5 text-sm">
                 {it.status === "done" ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  <CheckCircle2 className="h-4 w-4 text-success" />
                 ) : it.status === "error" ? (
-                  <AlertCircle className="h-4 w-4 text-destructive" />
+                  <AlertCircle className="h-4 w-4 text-accent" />
                 ) : (
-                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <Loader2 className="h-4 w-4 animate-spin text-brand" />
                 )}
-                <span className="flex-1 truncate">{it.name}</span>
-                <span className="text-xs text-muted-foreground">{formatBytes(it.size)}</span>
+                <span className="flex-1 truncate font-medium text-fg">{it.name}</span>
+                <span className="text-xs text-fg-soft">{formatBytes(it.size)}</span>
                 {it.status === "error" && (
-                  <span className="text-xs text-destructive">{it.error}</span>
+                  <span className="text-xs font-medium text-accent">{it.error}</span>
                 )}
               </li>
             ))}

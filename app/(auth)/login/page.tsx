@@ -33,9 +33,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
-      <h1 className="text-xl font-semibold">Giriş yap</h1>
-      <p className="mt-1 text-sm text-muted-foreground">Edel Drive hesabına gir.</p>
+    <div className="edel-card p-7">
+      <div className="text-center">
+        <p className="overline">EDEL DRIVE</p>
+        <h1 className="mt-2 text-2xl font-extrabold tracking-tight">Tekrar hoş geldin</h1>
+        <p className="mt-1 text-sm text-fg-muted">Drive hesabına gir, kaldığın yerden devam et.</p>
+      </div>
       <form onSubmit={onSubmit} className="mt-6 space-y-3">
         <Input
           type="email"
@@ -51,14 +54,18 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        {err && <p className="text-sm text-destructive">{err}</p>}
+        {err && (
+          <p className="rounded-md bg-accent-soft px-3 py-2 text-xs font-medium text-accent">
+            {err}
+          </p>
+        )}
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Giriliyor..." : "Giriş yap"}
+          {loading ? "Giriliyor..." : "Giriş Yap"}
         </Button>
       </form>
-      <p className="mt-4 text-center text-sm text-muted-foreground">
+      <p className="mt-5 text-center text-sm text-fg-muted">
         Hesabın yok mu?{" "}
-        <Link href="/signup" className="text-primary underline-offset-4 hover:underline">
+        <Link href="/signup" className="font-semibold text-brand hover:underline">
           Kayıt ol
         </Link>
       </p>

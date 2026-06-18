@@ -111,14 +111,23 @@ export function DriveBrowser({
     if (data?.signedUrl) window.location.href = data.signedUrl;
   }
 
+  const title =
+    breadcrumbs.length === 0
+      ? "Tüm dosyalar"
+      : breadcrumbs[breadcrumbs.length - 1].name;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       <Breadcrumbs items={breadcrumbs} />
 
-      <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {breadcrumbs.length === 0 ? "Tüm dosyalar" : breadcrumbs[breadcrumbs.length - 1].name}
-        </h1>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="overline">DRIVE</p>
+          <h1 className="mt-1 text-3xl font-extrabold tracking-tight">{title}</h1>
+          <p className="mt-1 text-sm text-fg-muted">
+            {folders.length} klasör · {files.length} dosya
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Dialog open={newFolderOpen} onOpenChange={setNewFolderOpen}>
             <DialogTrigger asChild>
@@ -157,29 +166,38 @@ export function DriveBrowser({
 
       <section>
         {folders.length === 0 && files.length === 0 ? (
-          <div className="rounded-xl border border-dashed py-16 text-center text-sm text-muted-foreground">
-            Burası boş. Dosya yükle veya yeni klasör oluştur.
+          <div className="grid place-items-center rounded-2xl border-2 border-dashed border-border bg-surface-3/40 py-20 text-center">
+            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-primary-soft text-brand">
+              <FolderIcon className="h-7 w-7" />
+            </div>
+            <p className="mt-4 text-base font-bold text-fg">Burası boş</p>
+            <p className="mt-1 text-sm text-fg-muted">
+              Dosya yükle veya yeni klasör oluştur.
+            </p>
           </div>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {folders.map((f) => (
-              <div
-                key={f.id}
-                className="group flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-accent/40"
-              >
+              <div key={f.id} className="edel-card group flex items-center gap-3 p-4">
                 <Link
                   href={`/drive?folder=${f.id}`}
                   className="flex flex-1 items-center gap-3 truncate"
                 >
-                  <FolderIcon className="h-8 w-8 flex-shrink-0 text-amber-500" />
+                  <div className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl bg-primary-soft text-brand">
+                    <FolderIcon className="h-5 w-5" />
+                  </div>
                   <div className="min-w-0 flex-1">
-                    <div className="truncate font-medium">{f.name}</div>
-                    <div className="text-xs text-muted-foreground">{formatDate(f.created_at)}</div>
+                    <div className="truncate font-bold text-fg">{f.name}</div>
+                    <div className="text-xs text-fg-soft">{formatDate(f.created_at)}</div>
                   </div>
                 </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -193,7 +211,7 @@ export function DriveBrowser({
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={() => deleteFolder(f.id)}
-                      className="text-destructive"
+                      className="text-accent focus:bg-accent-soft"
                     >
                       <Trash2 className="h-4 w-4" />
                       Sil
@@ -204,25 +222,26 @@ export function DriveBrowser({
             ))}
 
             {files.map((file) => (
-              <div
-                key={file.id}
-                className="group flex items-center gap-3 rounded-xl border bg-card p-4 transition-colors hover:bg-accent/40"
-              >
+              <div key={file.id} className="edel-card group flex items-center gap-3 p-4">
                 <button
                   onClick={() => setPreview(file)}
                   className="flex flex-1 items-center gap-3 truncate text-left"
                 >
                   <FileTypeIcon mime={file.mime_type} />
                   <div className="min-w-0 flex-1">
-                    <div className="truncate font-medium">{file.name}</div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="truncate font-bold text-fg">{file.name}</div>
+                    <div className="text-xs text-fg-soft">
                       {formatBytes(file.size_bytes)} · {formatDate(file.created_at)}
                     </div>
                   </div>
                 </button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -238,7 +257,10 @@ export function DriveBrowser({
                       Paylaş
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => deleteFile(file)} className="text-destructive">
+                    <DropdownMenuItem
+                      onClick={() => deleteFile(file)}
+                      className="text-accent focus:bg-accent-soft"
+                    >
                       <Trash2 className="h-4 w-4" />
                       Sil
                     </DropdownMenuItem>
@@ -262,19 +284,19 @@ export function DriveBrowser({
 
 function Breadcrumbs({ items }: { items: { id: string; name: string }[] }) {
   return (
-    <nav className="flex items-center gap-1 text-sm text-muted-foreground">
-      <Link href="/drive" className="flex items-center gap-1 hover:text-foreground">
+    <nav className="flex items-center gap-1.5 text-sm text-fg-muted">
+      <Link href="/drive" className="inline-flex items-center gap-1.5 hover:text-fg">
         <Home className="h-3.5 w-3.5" />
         Drive
       </Link>
       {items.map((it, i) => (
-        <span key={it.id} className="flex items-center gap-1">
-          <ChevronRight className="h-3.5 w-3.5" />
+        <span key={it.id} className="inline-flex items-center gap-1.5">
+          <ChevronRight className="h-3.5 w-3.5 text-fg-soft" />
           <Link
             href={`/drive?folder=${it.id}`}
             className={cn(
-              "hover:text-foreground",
-              i === items.length - 1 && "text-foreground font-medium",
+              "hover:text-fg",
+              i === items.length - 1 && "font-bold text-fg",
             )}
           >
             {it.name}
@@ -286,11 +308,31 @@ function Breadcrumbs({ items }: { items: { id: string; name: string }[] }) {
 }
 
 function FileTypeIcon({ mime }: { mime: string | null }) {
-  const base = "h-8 w-8 flex-shrink-0";
-  if (!mime) return <FileIcon className={cn(base, "text-muted-foreground")} />;
-  if (mime.startsWith("image/")) return <ImageIcon className={cn(base, "text-emerald-500")} />;
-  if (mime.startsWith("video/")) return <Film className={cn(base, "text-purple-500")} />;
-  if (mime === "application/pdf" || mime.startsWith("text/"))
-    return <FileText className={cn(base, "text-rose-500")} />;
-  return <FileIcon className={cn(base, "text-muted-foreground")} />;
+  const wrap = "grid h-10 w-10 flex-shrink-0 place-items-center rounded-xl";
+  if (mime?.startsWith("image/")) {
+    return (
+      <div className={cn(wrap, "bg-[#dcfce7] text-success")}>
+        <ImageIcon className="h-5 w-5" />
+      </div>
+    );
+  }
+  if (mime?.startsWith("video/")) {
+    return (
+      <div className={cn(wrap, "bg-[#ede9fe] text-[#7c3aed]")}>
+        <Film className="h-5 w-5" />
+      </div>
+    );
+  }
+  if (mime === "application/pdf" || mime?.startsWith("text/")) {
+    return (
+      <div className={cn(wrap, "bg-accent-soft text-accent")}>
+        <FileText className="h-5 w-5" />
+      </div>
+    );
+  }
+  return (
+    <div className={cn(wrap, "bg-surface-2 text-fg-muted")}>
+      <FileIcon className="h-5 w-5" />
+    </div>
+  );
 }
