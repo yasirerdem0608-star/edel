@@ -1,5 +1,5 @@
 import "server-only";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createServiceClient } from "@/lib/supabase/server";
 
 export async function ensureDefaultWorkspace() {
   const supabase = await createClient();
@@ -26,17 +26,24 @@ export async function ensureDefaultWorkspace() {
     .slice(0, 40) || "workspace";
   const slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`;
 
-  const { data: ws, error: wsErr } = await supabase
-    .from("workspaces")
-    .insert({ name, slug, created_by: user.id })
-    .select("id, name, slug")
-    .single();
-  if (wsErr || !ws) throw wsErr;
+  // Bootstrap'ı service client ile yapıyoruz (RLS bypass). Sebep: RLS politikaları
+  // tavuk-yumurta sorunu yaratıyor — kullanıcı, üyeliği daha yazılmadan ne yeni
+  // workspace'ini geri okuyabilir (workspaces SELECT = is_workspace_member) ne de
+  // üyelik insert'inin "creator" dalındaki exists(workspaces) alt sorgusunu geçebilir.
+  // Bu sunucu tarafı kod; sadece kimliği doğrulanmış kullanıcının kendi ilk
+  // workspace'ini + owner üyeliğini oluşturur, dolayısıyla güvenli bir admin işlemi.
+  const admin = await createServiceClient();
+  const id = crypto.randomUUID();
 
-  const { error: mErr } = await supabase
+  const { error: wsErr } = await admin
+    .from("workspaces")
+    .insert({ id, name, slug, created_by: user.id });
+  if (wsErr) throw wsErr;
+
+  const { error: mErr } = await admin
     .from("workspace_members")
-    .insert({ workspace_id: ws.id, user_id: user.id, role: "owner" });
+    .insert({ workspace_id: id, user_id: user.id, role: "owner" });
   if (mErr) throw mErr;
 
-  return { workspace_id: ws.id, workspaces: ws };
+  return { workspace_id: id, workspaces: { id, name, slug } };
 }

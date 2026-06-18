@@ -10,3 +10,7 @@ dist
 *.log
 .vercel
 next-env.d.ts
+.claude/
+
+# build artifacts
+*.tsbuildinfo

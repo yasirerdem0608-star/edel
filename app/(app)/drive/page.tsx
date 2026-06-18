@@ -16,7 +16,6 @@ export default async function DriveRootPage({
 
   const membership = await ensureDefaultWorkspace();
   if (!membership) redirect("/login");
-  // @ts-expect-error - ilişkisel obje
   const workspaceId = membership.workspace_id as string;
 
   const sp = await searchParams;
@@ -60,7 +59,10 @@ async function buildBreadcrumbs(workspaceId: string, folderId: string | null) {
   const chain: { id: string; name: string }[] = [];
   let cur: string | null = folderId;
   while (cur) {
-    const { data, error } = await supabase
+    const { data, error }: {
+      data: { id: string; name: string; parent_id: string | null } | null;
+      error: unknown;
+    } = await supabase
       .from("folders")
       .select("id, name, parent_id")
       .eq("id", cur)
